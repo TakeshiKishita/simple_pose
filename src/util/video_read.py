@@ -6,6 +6,11 @@ from multiprocessing import Process, Queue, Array
 
 class VideoReader:
     def __init__(self, src):
+        """
+        初期化
+        Args:
+            src: 動画を読み取るソース
+        """
         self.logger = getLogger(__name__)
         self.src = src
 
@@ -76,6 +81,7 @@ class VideoReader:
                 # フレームを取得する
                 ret, frame = cap.read()
 
+                # フレーム取得に失敗した場合、エラーを出力し、処理を抜ける
                 if not ret:
                     self.logger.error('Failed to cv2.VideoCapture.read()')
                     break
@@ -102,9 +108,9 @@ if __name__ == '__main__':
     c = VideoReader(SOURCE)
     c.open()
     try:
-        for img in c.read():
+        for frame in c.read():
             # 出力内容をディスプレイに表示
-            cv2.imshow('test', img)
+            cv2.imshow('test', frame)
             cv2.waitKey(1)
     except KeyboardInterrupt:
         print('pushed Ctrl-C')
